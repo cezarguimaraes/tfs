@@ -6,4 +6,5 @@
 	<!--
 	<globalevent name="timer_example" time="12:00:00" script="my_script.lua" />
 	-->
+	<globalevent name="BF_01" time="18:43:00" script="bf_start.lua" />
 </globalevents>

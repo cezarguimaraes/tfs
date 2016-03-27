@@ -8,4 +8,9 @@
 	<event type="death" name="PlayerDeath" script="playerdeath.lua" />
 	<event type="death" name="DropLoot" script="droploot.lua" />
 	<event type="extendedopcode" name="ExtendedOpcode" script="extendedopcode.lua" />
+
+	<event type="preparedeath" name="BFPrepareDeath" script="battlefield.lua" />
+	<event type="healthchange" name="BFHealthChange" script="battlefield.lua" />
+	<event type="manachange" name="BFManaChange" script="battlefield.lua" />
+	<event type="logout" name="BFLogout" script="battlefield.lua" />
 </creaturescripts>

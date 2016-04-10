@@ -163,6 +163,8 @@ function Player:onGainExperience(source, exp, rawExp)
 		end
 	end
 
+	exp = exp * (currentExpBonus or 1)
+
 	return exp
 end
 

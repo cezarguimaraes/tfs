@@ -1,0 +1,4 @@
+PULL CHANGES FROM PUBLIC
+git remote add public https://github.com/otland/forgottenserver.git
+git pull public master
+git push origin master

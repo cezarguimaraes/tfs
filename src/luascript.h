@@ -959,6 +959,8 @@ class LuaScriptInterface
 		static int luaPlayerGetContainerById(lua_State* L);
 		static int luaPlayerGetContainerIndex(lua_State* L);
 
+		static int luaPlayerSendStoreError(lua_State* L);
+
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
 
@@ -1238,6 +1240,12 @@ class LuaScriptInterface
 		static int luaPartyIsSharedExperienceEnabled(lua_State* L);
 		static int luaPartyShareExperience(lua_State* L);
 		static int luaPartySetSharedExperience(lua_State* L);
+
+		// StoreOffer
+		static int luaStoreOfferCreate(lua_State* L);
+
+		static int luaStoreOfferGetName(lua_State* L);
+		static int luaStoreOfferGetId(lua_State* L);
 
 		//
 		lua_State* luaState;

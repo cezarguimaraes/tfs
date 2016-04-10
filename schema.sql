@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `password` char(40) NOT NULL,
   `type` int(11) NOT NULL DEFAULT '1',
   `premdays` int(11) NOT NULL DEFAULT '0',
+  `premium_points` int(11) unsigned NOT NULL DEFAULT '0',
   `lastday` int(10) unsigned NOT NULL DEFAULT '0',
   `email` varchar(255) NOT NULL DEFAULT '',
   `creation` int(11) NOT NULL DEFAULT '0',
@@ -322,6 +323,16 @@ CREATE TABLE IF NOT EXISTS `server_config` (
 ) ENGINE=InnoDB;
 
 INSERT INTO `server_config` (`config`, `value`) VALUES ('db_version', '18'), ('motd_hash', ''), ('motd_num', '0'), ('players_record', '0');
+
+CREATE TABLE IF NOT EXISTS `store_history` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `coins` int(10) NOT NULL DEFAULT '0',
+  `description` varchar(256) NOT NULL DEFAULT '',
+  `timestamp` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`account_id`) REFERENCES `accounts`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `tile_store` (
   `house_id` int(11) NOT NULL,

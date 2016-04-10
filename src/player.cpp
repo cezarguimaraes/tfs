@@ -1448,6 +1448,21 @@ void Player::onSendContainer(const Container* container)
 	}
 }
 
+//store
+void Player::sendStoreError(StoreError_t errorType, const std::string& message)
+{
+	if (client) {
+		client->sendStoreError(errorType, message);
+	}
+}
+
+void Player::sendStorePurchaseCompleted(const std::string& message)
+{
+	if (client) {
+		client->sendStorePurchaseCompleted(message);
+	}
+}
+
 //inventory
 void Player::onUpdateInventoryItem(Item* oldItem, Item* newItem)
 {

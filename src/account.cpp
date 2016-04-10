@@ -1,6 +1,6 @@
 /**
  * The Forgotten Server - a free and open-source MMORPG server emulator
- * Copyright (C) 2016  Mark Samman <mark.samman@gmail.com>
+ * Copyright (C) 2015  Mark Samman <mark.samman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,36 +17,29 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef FS_MOUNTS_H_73716D11906A4C5C9F4A7B68D34C9BA6
-#define FS_MOUNTS_H_73716D11906A4C5C9F4A7B68D34C9BA6
+#include "otpch.h"
 
-struct Mount
-{
-	Mount(uint8_t id, uint16_t clientId, std::string name, int32_t speed, bool premium)
-		: name(name), speed(speed), clientId(clientId), id(id), premium(premium) {}
+#include "account.h"
+#include "database.h"
+#include "databasetasks.h"
 
-	std::string name;
-	int32_t speed;
-	uint16_t clientId;
-	uint8_t id;
-	bool premium;
-};
+uint32_t IOAccount::getCoinBalance(uint32_t accountId) {
+	Database* db = Database::getInstance();
 
-class Mounts
-{
-	public:
-		bool reload();
-		bool loadFromXml();
-		Mount* getMountByID(uint8_t id);
-		Mount* getMountByName(const std::string& name);
-		Mount* getMountByClientID(uint16_t clientId);
+	std::ostringstream query;
+	query << "SELECT `premium_points` FROM `accounts` WHERE `id` = " << accountId;
 
-		const std::vector<Mount>& getMounts() const {
-			return mounts;
-		}
+	DBResult_ptr result = db->storeQuery(query.str());
+	if (!result) {
+		return false;
+	}
 
-	private:
-		std::vector<Mount> mounts;
-};
+	return result->getNumber<uint32_t>("premium_points");
+}
 
-#endif
+void IOAccount::addCoins(uint32_t accountId, int32_t coins) {
+	std::ostringstream query;
+	query << "UPDATE `accounts` SET `premium_points` = `premium_points` + " << coins << " WHERE `id` = " << accountId;
+
+	g_databaseTasks.addTask(query.str());
+}

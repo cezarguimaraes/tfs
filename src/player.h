@@ -36,6 +36,7 @@
 #include "groups.h"
 #include "town.h"
 #include "mounts.h"
+#include "store.h"
 
 class House;
 class NetworkMessage;
@@ -845,6 +846,10 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
+		//store
+		void sendStoreError(StoreError_t errorType, const std::string& message);
+		void sendStorePurchaseCompleted(const std::string& message);
+
 		//inventory
 		void sendInventoryItem(slots_t slot, const Item* item) {
 			if (client) {
@@ -1269,6 +1274,7 @@ class Player final : public Creature, public Cylinder
 		int32_t offlineTrainingSkill;
 		int32_t offlineTrainingTime;
 		int32_t idleTime;
+		uint32_t coinBalance;
 
 		uint16_t lastStatsTrainingTime;
 		uint16_t staminaMinutes;

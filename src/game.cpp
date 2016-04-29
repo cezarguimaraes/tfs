@@ -4890,6 +4890,9 @@ void Game::playerPurchaseStoreOffer(uint32_t playerId, uint32_t offerId, const s
 	if (!offer) {
 		player->sendStoreError(STORE_ERROR_PURCHASE, "Offer not found. Please reopen the store and try again.");
 		return;
+	} else if (!offer->available()) {
+		player->sendStoreError(STORE_ERROR_PURCHASE, "This offer is not available anymore.");
+		return;
 	}
 
 	auto coinBalance = IOAccount::getCoinBalance(player->getAccount());

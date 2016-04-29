@@ -1,4 +1,11 @@
 function onLogin(player)
+	local characterOffer = player:getCharacterOffer()
+	if characterOffer then
+		characterOffer:setAvailable(false)
+		db.query("DELETE FROM `store_characters` WHERE `player_id` = " .. player:getGuid())
+		player:sendTextMessage(MESSAGE_STATUS_WARNING, "Your character was removed from the store because you logged in.")
+	end
+
 	local loginStr = "Welcome to " .. configManager.getString(configKeys.SERVER_NAME) .. "!"
 	if player:getLastLoginSaved() <= 0 then
 		loginStr = loginStr .. " Please choose your outfit."

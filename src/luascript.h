@@ -556,6 +556,8 @@ class LuaScriptInterface
 
 		static int luaGameStartRaid(lua_State* L);
 
+		static int luaGameReloadStoreCharacters(lua_State* L);
+
 		// Variant
 		static int luaVariantCreate(lua_State* L);
 
@@ -960,6 +962,8 @@ class LuaScriptInterface
 		static int luaPlayerGetContainerIndex(lua_State* L);
 
 		static int luaPlayerSendStoreError(lua_State* L);
+		static int luaPlayerAddToStore(lua_State* L);
+		static int luaPlayerGetCharacterOffer(lua_State*L );
 
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
@@ -1245,7 +1249,10 @@ class LuaScriptInterface
 		static int luaStoreOfferCreate(lua_State* L);
 
 		static int luaStoreOfferGetName(lua_State* L);
+		static int luaStoreOfferGetPrice(lua_State* L);
 		static int luaStoreOfferGetId(lua_State* L);
+		static int luaStoreOfferSetAvailable(lua_State* L);
+		static int luaStoreOfferGetInfo(lua_State* L);
 
 		//
 		lua_State* luaState;

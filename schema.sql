@@ -334,6 +334,15 @@ CREATE TABLE IF NOT EXISTS `store_history` (
   FOREIGN KEY (`account_id`) REFERENCES `accounts`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `store_characters` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `player_id` int(11) NOT NULL,
+  `price` int(10) NOT NULL DEFAULT '0',
+  `timestamp` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS `tile_store` (
   `house_id` int(11) NOT NULL,
   `data` longblob NOT NULL,

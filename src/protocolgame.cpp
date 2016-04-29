@@ -2139,8 +2139,10 @@ void ProtocolGame::sendStoreOffers(StoreCategory& category)
 
 	msg.addString(category.getName());
 	
-	msg.add<uint16_t>(category.getOffers().size());
+	msg.add<uint16_t>(category.size());
 	for (auto& offer : category.getOffers()) {
+		if (!offer.available()) continue;
+
 		msg.add<uint32_t>(offer.getId());
 		msg.addString(offer.getName());
 		msg.addString(offer.getDescription());

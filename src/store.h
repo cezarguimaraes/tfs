@@ -52,6 +52,7 @@ class Store
 		Store();
 
 		bool loadFromXml(bool reloading = false);
+		bool loadCharacters();
 		bool reload();
 
 		std::vector<StoreCategory>& getCategories() {
@@ -62,6 +63,10 @@ class Store
 		void onTransactionCompleted(uint32_t accountId, int32_t coins, const std::string& description) const;
 
 		boost::optional<StoreOffer&> getOfferById(uint32_t id);
+		boost::optional<StoreOffer&> getCharacterOffer(uint32_t playerId);
+
+		bool addCharacterOffer(Player* player, uint32_t price);
+		StoreCategory* getCharactersCategory();
 
 		//scripting
 		bool executeOnBuy(Player* player, StoreOffer* offer, const std::string& param);
@@ -70,6 +75,8 @@ class Store
 	protected: 
 		std::unique_ptr<LuaScriptInterface> scriptInterface;
 		std::vector<StoreCategory> categories;
+
+		StoreCategory* charactersCategory;
 
 		bool loaded;
 		uint32_t runningId;
@@ -129,6 +136,8 @@ class StoreCategory : public StoreEntry
 			return offers;
 		}
 
+		size_t size() const;
+
 	protected:
 		std::string parent; 
 
@@ -147,6 +156,9 @@ class StoreOffer : public StoreEntry
 			id = _id;
 			price = 0;
 			state = STORE_OFFERSTATE_NONE;
+
+			m_available = true;
+			info.first = 0; info.second = 0;
 
 			scriptInterface = nullptr;
 			renderEvent = -1;
@@ -173,11 +185,22 @@ class StoreOffer : public StoreEntry
 			return message;
 		}
 
+		bool available() const {
+			return m_available;
+		}
+
+		void setAvailable(bool val) {
+			m_available = val;
+		}
+
 	protected:
 		uint32_t id;
 		uint32_t price;
 		std::string message; //on purchase message
 		StoreOfferState_t state;
+
+		bool m_available;
+		std::pair<uint32_t, uint32_t> info;
 
 		std::vector<SubOffer> subOffers; //bundled offers
 

@@ -1835,6 +1835,8 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Game", "startRaid", LuaScriptInterface::luaGameStartRaid);
 
+	registerMethod("Game", "reloadStoreCharacters", LuaScriptInterface::luaGameReloadStoreCharacters);
+
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);
 
@@ -2248,6 +2250,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getContainerIndex", LuaScriptInterface::luaPlayerGetContainerIndex);
 
 	registerMethod("Player", "sendStoreError", LuaScriptInterface::luaPlayerSendStoreError);
+	registerMethod("Player", "addToStore", LuaScriptInterface::luaPlayerAddToStore);
+	registerMethod("Player", "getCharacterOffer", LuaScriptInterface::luaPlayerGetCharacterOffer);
 
 	// Monster
 	registerClass("Monster", "Creature", LuaScriptInterface::luaMonsterCreate);
@@ -2551,6 +2555,9 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("StoreOffer", "getId", LuaScriptInterface::luaStoreOfferGetId);
 	registerMethod("StoreOffer", "getName", LuaScriptInterface::luaStoreOfferGetName);
+	registerMethod("StoreOffer", "getPrice", LuaScriptInterface::luaStoreOfferGetPrice);
+	registerMethod("StoreOffer", "setAvailable", LuaScriptInterface::luaStoreOfferSetAvailable);
+	registerMethod("StoreOffer", "getInfo", LuaScriptInterface::luaStoreOfferGetInfo);
 }
 
 #undef registerEnum
@@ -4427,6 +4434,13 @@ int LuaScriptInterface::luaGameStartRaid(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaGameReloadStoreCharacters(lua_State* L)
+{
+	// Game.reloadStoreCharacters()
+	pushBoolean(L, g_store->loadCharacters());
 	return 1;
 }
 
@@ -9286,6 +9300,45 @@ int LuaScriptInterface::luaPlayerSendStoreError(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerAddToStore(lua_State* L)
+{
+	// player:addToStore(price)
+	Player* player = getUserdata<Player>(L, 1);
+	uint32_t price = getNumber<uint32_t>(L, 2);
+	if (!player || g_store->getCharacterOffer(player->getGUID()) || price == 0) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	std::ostringstream query;
+	query << "INSERT INTO `store_characters` (`player_id`, `price`) VALUES (" << player->getGUID() << ", " << price << ")";
+
+	if (Database::getInstance()->executeQuery(query.str()) && g_store->addCharacterOffer(player, price)) {
+		player->kickPlayer(true);
+		pushBoolean(L, true);
+	} else {
+		pushBoolean(L, false);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetCharacterOffer(lua_State* L) 
+{
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+	} else {
+		auto offer = g_store->getCharacterOffer(player->getGUID());
+		if (offer) {
+			pushUserdata<StoreOffer>(L, &(*offer));
+			setMetatable(L, -1, "StoreOffer");
+		} else {
+			lua_pushnil(L);
+		}
+	}
+	return 1;
+}
 
 // Monster
 int LuaScriptInterface::luaMonsterCreate(lua_State* L)
@@ -12142,6 +12195,18 @@ int LuaScriptInterface::luaStoreOfferGetId(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaStoreOfferGetPrice(lua_State* L)
+{
+	// storeOffer:getPrice()
+	StoreOffer* offer = getUserdata<StoreOffer>(L, 1);
+	if (offer) {
+		lua_pushnumber(L, offer->getPrice());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaScriptInterface::luaStoreOfferGetName(lua_State* L)
 {
 	// storeOffer:getName()
@@ -12151,6 +12216,33 @@ int LuaScriptInterface::luaStoreOfferGetName(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaStoreOfferSetAvailable(lua_State* L)
+{
+	// storeOffer:setAvailable(available)
+	StoreOffer* offer = getUserdata<StoreOffer>(L, 1);
+	if (offer) {
+		offer->setAvailable(getBoolean(L, 2, false));
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaStoreOfferGetInfo(lua_State* L) 
+{
+	// storeOffer:getInfo()
+	StoreOffer* offer = getUserdata<StoreOffer>(L, 1);
+	if (offer) {
+		lua_pushnumber(L, offer->info.first);
+		lua_pushnumber(L, offer->info.second);
+		return 2;
+	}
+
+	lua_pushnil(L);
 	return 1;
 }
 

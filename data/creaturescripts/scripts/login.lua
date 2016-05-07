@@ -17,7 +17,8 @@ function onLogin(player)
 		local changed = false
 		for k = #bonusExpStages, 1, -1 do
 			local stage = bonusExpStages[k]
-			if nplayers >= stage[1] then
+			local curplayers = (stage[2] > currentExpBonus) and nplayers or nplayers + 10 
+			if curplayers >= stage[1] then
 				changed = true
 				if currentExpBonus < stage[2] then
 					Game.broadcastMessage("The server has reached " .. stage[1] .. " players online! The bonus of exp is now " .. ((stage[2] - 1) * 100) .. "%!")

@@ -1124,6 +1124,7 @@ void ProtocolGame::parseStoreOpen()
 
 void ProtocolGame::parseStoreSelectCategory(NetworkMessage& msg)
 {
+	msg.skipBytes(1);
 	std::string categoryName = msg.getString();
 
 	for (auto& category : g_store->getCategories()) {

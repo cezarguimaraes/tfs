@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<imbuements>
+
+	<!-- Config -->
+
+	<config prefix="Basic" fee="5000" chance="90" additional="10000" duration="72000" />
+	<config prefix="Intricate" fee="25000" chance="70" additional="30000" duration="72000" />
+	<config prefix="Powerful" fee="100000" chance="50" additional="50000" duration="72000" />
+
+	<!-- Group Names -->
+
+	<group id="0" name="Elemental Damage" /> <!-- Fire -->
+	<group id="1" name="Elemental Damage" /> <!-- Earth -->
+	<group id="2" name="Elemental Damage" /> <!-- Ice -->
+	<group id="3" name="Elemental Damage" /> <!-- Energy -->
+	<group id="4" name="Elemental Damage" /> <!-- Death -->
+
+	<group id="5" name="Hit Points Leech" />
+	<group id="6" name="Mana Leech" />
+
+	<group id="7" name="Critical" />
+
+	<group id="8" name="Elemental Protection" /> <!-- Death -->
+	<group id="9" name="Elemental Protection" /> <!-- Earth -->
+	<group id="10" name="Elemental Protection" /> <!-- Fire -->
+	<group id="11" name="Elemental Protection" /> <!-- Ice -->
+	<group id="12" name="Elemental Protection" /> <!-- Energy -->
+	<group id="13" name="Elemental Protection" /> <!-- Holy -->
+
+	<group id="14" name="Elemental Damage" /> <!-- Speed -->
+
+	<group id="15" name="Elemental Damage" /> <!-- Axe -->
+	<group id="16" name="Elemental Damage" /> <!-- Sword -->
+	<group id="17" name="Elemental Damage" /> <!-- Club -->
+	<group id="18" name="Elemental Damage" /> <!-- Shielding -->
+	<group id="19" name="Elemental Damage" /> <!-- Distance -->
+	<group id="20" name="Elemental Damage" /> <!-- Magic Level -->
+	
+	<!-- Equipment Types -->
+
+	<equipment_type name="sword">
+		<item name="bright sword" />
+	</equipment_type>
+
+	<equipment_type name="club">
+		<item name="heavy mace" />
+	</equipment_type>
+
+	<equipment_type name="axe">
+		<item name="drakinata" slots="2" />
+	</equipment_type>
+
+	<equipment_type name="wand">
+		<item name="wand of draconia" />
+	</equipment_type>
+
+	<equipment_type name="rod">
+		<item name="northwind rod" />
+	</equipment_type>
+
+	<equipment_type name="armor">
+		<item name="noble armor" />
+	</equipment_type>
+
+	<equipment_type name="bow">
+		<item name="warsinger bow" />
+	</equipment_type>
+
+	<equipment_type name="spellbook">
+		<item name="spellbook" />
+	</equipment_type>
+
+	<equipment_type name="shield">
+		<item name="vampire shield" />
+	</equipment_type>
+
+	<equipment_type name="boot">
+		<item name="crocodile boots" />
+	</equipment_type>
+
+	<!-- Imbuements -->
+
+	<!--
+
+		effects:
+		magic level OK
+		skills OK
+		damage resistance OK
+		element damage ?
+		life/mana leech src 
+		crit src
+		speed OK
+
+	-->
+
+	<imbuement id="0" groupid="0" name="Basic Scorch" description="Converts 10% of physical damage to fire damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="fire" percent="10" />
+
+		<source name="fiery heart" count="25" />
+	</imbuement>
+
+	<imbuement id="1" groupid="0" name="Intricate Scorch" description="Converts 25% of physical damage to fire damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="fire" percent="25" />
+
+		<source name="fiery heart" count="25" />
+		<source name="green dragon scale" count="5" />
+	</imbuement>
+
+	<imbuement id="2" groupid="0" name="Powerful Scorch" description="Converts 50% of physical damage to fire damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="fire" percent="50" />
+
+		<source name="fiery heart" count="25" />
+		<source name="green dragon scale" count="5" />
+		<source name="demon horn" count="5" />
+	</imbuement>
+
+	<imbuement id="3" groupid="1" name="Basic Venom" description="Converts 10% of physical damage to earth damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="earth" percent="10" />
+
+		<source name="swamp grass" count="25" />
+	</imbuement>
+
+	<imbuement id="4" groupid="1" name="Intricate Venom" description="Converts 25% of physical damage to earth damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="earth" percent="25" />
+
+		<source name="swamp grass" count="25" />
+		<source name="poisonous slime" count="20" />
+	</imbuement>
+
+	<imbuement id="5" groupid="1" name="Powerful Venom" description="Converts 50% of physical damage to earth damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="earth" percent="50" />
+
+		<source name="swamp grass" count="25" />
+		<source name="poisonous slime" count="20" />
+		<source name="slime heart" count="2" />
+	</imbuement>
+
+	<imbuement id="6" groupid="2" name="Basic Frost" description="Converts 10% of physical damage to ice damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="ice" percent="10" />
+
+		<source name="polar bear paw" count="25" />
+	</imbuement>
+
+	<imbuement id="7" groupid="2" name="Intricate Frost" description="Converts 25% of physical damage to ice damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="ice" percent="25" />
+
+		<source name="polar bear paw" count="25" />
+		<source name="frosty heart" count="20" />
+	</imbuement>
+
+	<imbuement id="8" groupid="2" name="Powerful Frost" description="Converts 50% of physical damage to ice damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="ice" percent="50" />
+
+		<source name="polar bear paw" count="25" />
+		<source name="frosty heart" count="20" />
+		<source name="seacrest hair" count="1" />
+	</imbuement>
+
+	<imbuement id="9" groupid="3" name="Basic Electrify" description="Converts 10% of physical damage to energy damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="energy" percent="10" />
+
+		<source name="rorc feather" count="25" />
+	</imbuement>
+
+	<imbuement id="10" groupid="3" name="Intricate Electrify" description="Converts 25% of physical damage to energy damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="energy" percent="25" />
+
+		<source name="rorc feather" count="25" />
+		<source name="peacock feather fan" count="5" />
+	</imbuement>
+
+	<imbuement id="11" groupid="3" name="Powerful Electrify" description="Converts 50% of physical damage to energy damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="energy" percent="50" />
+
+		<source name="rorc feather" count="25" />
+		<source name="peacock feather fan" count="5" />
+		<source name="energy vein" count="1" />
+	</imbuement>
+
+	<imbuement id="12" groupid="4" name="Basic Reap" description="Converts 10% of physical damage to death damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="death" percent="10" />
+
+		<source name="pile of grave earth" count="25" />
+	</imbuement>
+
+	<imbuement id="13" groupid="4" name="Intricate Reap" description="Converts 25% of physical damage to death damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="death" percent="25" />
+
+		<source name="pile of grave earth" count="25" />
+		<source name="demonic skeletal hand" count="20" />
+	</imbuement>
+
+	<imbuement id="14" groupid="4" name="Powerful Reap" description="Converts 50% of physical damage to death damage">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+
+		<effect type="element_damage" element="death" percent="50" />
+
+		<source name="pile of grave earth" count="25" />
+		<source name="demonic skeletal hand" count="20" />
+		<source name="petrified scream" count="1" />
+	</imbuement>
+
+	<imbuement id="15" groupid="5" name="Basic Vampirism" description="Converts 5% of damage to HP with a chance of 100%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		<equipment type="armor" />
+		<equipment type="bow" />
+
+		<effect type="life_leach" percent="5" chance="100" />
+
+		<source name="vampire teeth" count="25" />
+	</imbuement>
+
+	<imbuement id="16" groupid="5" name="Intricate Vampirism" description="Converts 10% of damage to HP with a chance of 100%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		<equipment type="armor" />
+		<equipment type="bow" />
+
+
+		<effect type="life_leach" percent="10" chance="100" />
+
+		<source name="vampire teeth" count="25" />
+		<source name="bloody pincers" count="15" />
+	</imbuement>
+
+	<imbuement id="17" groupid="5" name="Powerful Vampirism" description="Converts 25% of damage to HP with a chance of 100%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		<equipment type="armor" />
+		<equipment type="bow" />
+
+
+		<effect type="life_leach" percent="25" chance="100" />
+
+		<source name="vampire teeth" count="25" />
+		<source name="bloody pincers" count="15" />
+		<source name="piece of dead brain" count="5" />
+	</imbuement>
+
+	<imbuement id="18" groupid="6" name="Basic Void" description="Converts 3% of damage to mana with a chance of 100%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		<equipment type="helmet" />
+		<equipment type="bow" />
+
+		<effect type="mana_leech" percent="3" chance="100" />
+
+		<source name="rope belts" count="25" />
+	</imbuement>
+
+	<imbuement id="19" groupid="6" name="Intricate Void" description="Converts 5% of damage to mana with a chance of 100%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		<equipment type="helmet" />
+		<equipment type="bow" />
+
+		<effect type="mana_leech" percent="5" chance="100" />
+
+		<source name="rope belts" count="25" />
+		<source name="silencer claw" count="25" />
+	</imbuement>
+
+	<imbuement id="20" groupid="6" name="Powerful Void" description="Converts 8% of damage to mana with a chance of 100%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		<equipment type="helmet" />
+		<equipment type="bow" />
+
+		<effect type="mana_leech" percent="8" chance="100" />
+
+		<source name="rope belts" count="25" />
+		<source name="silencer claw" count="25" />
+		<source name="Some Grimeleech Wing" count="5" />
+	</imbuement>
+
+	<imbuement id="21" groupid="7" name="Basic Strike" description="Raises crit hit damage by 15% and crit hit chance by 10%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="bow" />
+
+		<effect type="crit" percent="15" chance="10" />
+
+		<source name="protective charm" count="20" />
+	</imbuement>
+
+	<imbuement id="22" groupid="7" name="Intricate Strike" description="Raises crit hit damage by 25% and crit hit chance by 10%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="bow" />
+
+		<effect type="crit" percent="25" chance="10" />
+
+		<source name="protective charm" count="20" />
+		<source name="sabreteeth" count="25" />
+	</imbuement>
+
+	<imbuement id="23" groupid="7" name="Powerful Strike" description="Raises crit hit damage by 50% and crit hit chance by 10%">
+		<equipment type="sword" />
+		<equipment type="club" />
+		<equipment type="axe" />
+		<equipment type="bow" />
+
+		<effect type="crit" percent="50" chance="10" />
+
+		<source name="protective charm" count="20" />
+		<source name="sabreteeth" count="25" />
+		<source name="vexclaw talon" count="5" />
+	</imbuement>
+
+	<imbuement id="24" groupid="8" name="Basic Lich Shroud" description="Reduces death damage by 3%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="3" element="death" />
+
+		<source name="flask of embalming fluid" count="25" />
+	</imbuement>
+
+	<imbuement id="25" groupid="8" name="Intricate Lich Shroud" description="Reduces death damage by 8%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="8" element="death" />
+
+		<source name="flask of embalming fluid" count="25" />
+		<source name="gloom wolf fur" count="20" />
+	</imbuement>
+
+	<imbuement id="26" groupid="8" name="Powerful Lich Shroud" description="Reduces death damage by 15%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="15" element="death" />
+
+		<source name="flask of embalming fluid" count="25" />
+		<source name="gloom wolf fur" count="20" />
+		<source name="mystical hourglass" count="5" />
+	</imbuement>
+
+	<imbuement id="27" groupid="9" name="Basic Snake Skin" description="Reduces earth damage by 3%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="3" element="earth" />
+
+		<source name="piece of sampling wood" count="25" />
+	</imbuement>
+
+	<imbuement id="28" groupid="9" name="Intricate Snake Skin" description="Reduces earth damage by 8%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="8" element="earth" />
+
+		<source name="piece of sampling wood" count="25" />
+		<source name="snake skin" count="20" />
+	</imbuement>
+
+	<imbuement id="29" groupid="9" name="Powerful Snake Skin" description="Reduces earth damage by 15%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="15" element="earth" />
+
+		<source name="piece of sampling wood" count="25" />
+		<source name="snake skin" count="20" />
+		<source name="brimstone fang" count="10" />
+	</imbuement>
+
+	<imbuement id="30" groupid="10" name="Basic Dragon Hide" description="Reduces fire damage by 3%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="3" element="fire" />
+
+		<source name="green dragon leather" count="25" />
+	</imbuement>
+
+	<imbuement id="31" groupid="10" name="Intricate Dragon Hide" description="Reduces fire damage by 8%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="8" element="fire" />
+
+		<source name="green dragon leather" count="25" />
+		<source name="blazing bone" count="10" />
+	</imbuement>
+
+	<imbuement id="32" groupid="10" name="Powerful Dragon Hide" description="Reduces fire damage by 15%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="15" element="fire" />
+
+		<source name="green dragon leather" count="25" />
+		<source name="blazing bone" count="10" />
+		<source name="draken sulphur" count="5" />
+	</imbuement>
+
+	<imbuement id="33" groupid="11" name="Basic Quara Scale" description="Reduces ice damage by 3%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="3" element="ice" />
+
+		<source name="winter wolf fur" count="25" />
+	</imbuement>
+
+	<imbuement id="34" groupid="11" name="Intricate Quara Scale" description="Reduces ice damage by 8%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="8" element="ice" />
+
+		<source name="winter wolf fur" count="25" />
+		<source name="thick fur" count="15" />
+	</imbuement>
+
+	<imbuement id="35" groupid="11" name="Powerful Quara Scale" description="Reduces ice damage by 15%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="15" element="ice" />
+
+		<source name="winter wolf fur" count="25" />
+		<source name="thick fur" count="15" />
+		<source name="deepling wart" count="10" />
+	</imbuement>
+
+	<imbuement id="36" groupid="12" name="Basic Cloud Fabric" description="Reduces energy damage by 3%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="3" element="energy" />
+
+		<source name="wyvern talisman" count="20" />
+	</imbuement>
+
+	<imbuement id="37" groupid="12" name="Intricate Cloud Fabric" description="Reduces energy damage by 8%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="8" element="energy" />
+
+		<source name="wyvern talisman" count="20" />
+		<source name="crawler head platin" count="15" />
+	</imbuement>
+
+	<imbuement id="38" groupid="12" name="Powerful Cloud Fabric" description="Reduces energy damage by 15%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="15" element="energy" />
+
+		<source name="wyvern talisman" count="20" />
+		<source name="crawler head platin" count="15" />
+		<source name="wyrm scale" count="10" />
+	</imbuement>
+
+	<imbuement id="39" groupid="13" name="Basic Demon Presence" description="Reduces holy damage by 3%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="3" element="holy" />
+
+		<source name="cultish robe" count="25" />
+	</imbuement>
+
+	<imbuement id="40" groupid="13" name="Intricate Demon Presence" description="Reduces holy damage by 8%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="8" element="holy" />
+
+		<source name="cultish robe" count="25" />
+		<source name="cultish mask" count="25" />
+	</imbuement>
+
+	<imbuement id="41" groupid="13" name="Powerful Demon Presence" description="Reduces holy damage by 15%">
+		<equipment type="armor" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="damage_reduction" percent="15" element="holy" />
+
+		<source name="cultish robe" count="25" />
+		<source name="cultish mask" count="25" />
+		<source name="hellspawn tail" count="20" />
+	</imbuement>
+
+	<imbuement id="42" groupid="14" name="Basic Swiftness" description="Raises walking speed by 10">
+		<equipment type="boot" />
+		
+		<effect type="speed" bonus="10" />
+
+		<source name="damselfly wing" count="25" />
+	</imbuement>
+
+	<imbuement id="43" groupid="14" name="Intricate Swiftness" description="Raises walking speed by 15">
+		<equipment type="boot" />
+		
+		<effect type="speed" bonus="15" />
+
+		<source name="damselfly wing" count="25" />
+		<source name="compass" count="25" />
+	</imbuement>
+
+	<imbuement id="44" groupid="14" name="Powerful Swiftness" description="Raises walking speed by 20">
+		<equipment type="boot" />
+		
+		<effect type="speed" bonus="20" />
+
+		<source name="damselfly wing" count="25" />
+		<source name="compass" count="25" />
+		<source name="waspoid wing" count="20" />
+	</imbuement>
+
+	<imbuement id="45" groupid="15" name="Basic Chop" description="Raises axe fighting skill by 1">
+		<equipment type="helmet" />
+		<equipment type="axe" />
+		
+		<effect type="skill" name="axe" bonus="1" />
+
+		<source name="orc tooth" count="20" />
+	</imbuement>
+
+	<imbuement id="46" groupid="15" name="Intricate Chop" description="Raises axe fighting skill by 2">
+		<equipment type="helmet" />
+		<equipment type="axe" />
+		
+		<effect type="skill" name="axe" bonus="2" />
+
+		<source name="orc tooth" count="20" />
+		<source name="battle stone" count="25" />
+	</imbuement>
+
+	<imbuement id="47" groupid="15" name="Powerful Chop" description="Raises axe fighting skill by 4">
+		<equipment type="helmet" />
+		<equipment type="axe" />
+		
+		<effect type="skill" name="axe" bonus="4" />
+
+		<source name="orc tooth" count="20" />
+		<source name="battle stone" count="25" />
+		<source name="moohtant horn" count="20" />
+	</imbuement>
+
+	<imbuement id="48" groupid="16" name="Basic Slash" description="Raises sword fighting skill by 1">
+		<equipment type="helmet" />
+		<equipment type="sword" />
+		
+		<effect type="skill" name="sword" bonus="1" />
+
+		<source name="lion's mane" count="25" />
+	</imbuement>
+
+	<imbuement id="49" groupid="16" name="Intricate Slash" description="Raises sword fighting skill by 2">
+		<equipment type="helmet" />
+		<equipment type="sword" />
+		
+		<effect type="skill" name="sword" bonus="2" />
+
+		<source name="lion's mane" count="25" />
+		<source name="mooh'tah shell" count="25" />
+	</imbuement>
+
+	<imbuement id="50" groupid="16" name="Powerful Slash" description="Raises sword fighting skill by 4">
+		<equipment type="helmet" />
+		<equipment type="sword" />
+		
+		<effect type="skill" name="sword" bonus="4" />
+
+		<source name="lion's mane" count="25" />
+		<source name="mooh'tah shell" count="25" />
+		<source name="war crystal" count="5" />
+	</imbuement>
+
+	<imbuement id="51" groupid="17" name="Basic Bash" description="Raises club fighting skill by 1">
+		<equipment type="helmet" />
+		<equipment type="club" />
+		
+		<effect type="skill" name="club" bonus="1" />
+
+		<source name="cyclops toe" count="20" />
+	</imbuement>
+
+	<imbuement id="52" groupid="17" name="Intricate Bash" description="Raises club fighting skill by 2">
+		<equipment type="helmet" />
+		<equipment type="club" />
+		
+		<effect type="skill" name="club" bonus="2" />
+
+		<source name="cyclops toe" count="20" />
+		<source name="ogre nose" count="15" />
+	</imbuement>
+
+	<imbuement id="53" groupid="17" name="Powerful Bash" description="Raises club fighting skill by 4">
+		<equipment type="helmet" />
+		<equipment type="club" />
+		
+		<effect type="skill" name="club" bonus="4" />
+
+		<source name="cyclops toe" count="20" />
+		<source name="ogre nose" count="15" />
+		<source name="war crystal" count="5" />
+	</imbuement>
+
+	<imbuement id="54" groupid="18" name="Basic Blockade" description="Raises shielding skill by 1">
+		<equipment type="helmet" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="skill" name="shielding" bonus="1" />
+
+		<source name="piece of scarab shell" count="20" />
+	</imbuement>
+
+	<imbuement id="55" groupid="18" name="Intricate Blockade" description="Raises shielding skill by 2">
+		<equipment type="helmet" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="skill" name="shielding" bonus="2" />
+
+		<source name="piece of scarab shell" count="20" />
+		<source name="brimstone shell" count="25" />
+	</imbuement>
+
+	<imbuement id="56" groupid="18" name="Powerful Blockade" description="Raises shielding skill by 4">
+		<equipment type="helmet" />
+		<equipment type="shield" />
+		<equipment type="spellbook" />
+		
+		<effect type="skill" name="shielding" bonus="4" />
+
+		<source name="piece of scarab shell" count="20" />
+		<source name="brimstone shell" count="25" />
+		<source name="frazzle skin" count="20" />
+	</imbuement>
+
+	<imbuement id="57" groupid="19" name="Basic Precision" description="Raises distance fighting skill by 1">
+		<equipment type="helmet" />
+		<equipment type="bow" />
+		
+		<effect type="skill" name="distance" bonus="1" />
+
+		<source name="elven scouting glass" count="25" />
+	</imbuement>
+
+	<imbuement id="58" groupid="19" name="Intricate Precision" description="Raises distance fighting skill by 2">
+		<equipment type="helmet" />
+		<equipment type="bow" />
+		
+		<effect type="skill" name="distance" bonus="2" />
+
+		<source name="elven scouting glass" count="25" />
+		<source name="elven hoof" count="25" />
+	</imbuement>
+
+	<imbuement id="59" groupid="19" name="Powerful Precision" description="Raises distance fighting skill by 4">
+		<equipment type="helmet" />
+		<equipment type="bow" />
+		
+		<effect type="skill" name="distance" bonus="4" />
+
+		<source name="elven scouting glass" count="25" />
+		<source name="elven hoof" count="25" />
+		<source name="metal spike" count="20" />
+	</imbuement>
+
+	<imbuement id="60" groupid="20" name="Basic Epiphany" description="Raises magic level by 1">
+		<equipment type="helmet" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		
+		<effect type="ml" bonus="1" />
+
+		<source name="elvish talisman" count="25" />
+	</imbuement>
+
+	<imbuement id="61" groupid="20" name="Intricate Epiphany" description="Raises magic level by 2">
+		<equipment type="helmet" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		
+		<effect type="ml" bonus="2" />
+
+		<source name="elvish talisman" count="25" />
+		<source name="broken shamanic staff" count="15" />
+	</imbuement>
+
+	<imbuement id="62" groupid="20" name="Powerful Epiphany" description="Raises magic level by 4">
+		<equipment type="helmet" />
+		<equipment type="wand" />
+		<equipment type="rod" />
+		
+		<effect type="ml" bonus="4" />
+
+		<source name="elvish talisman" count="25" />
+		<source name="broken shamanic staff" count="15" />
+		<source name="strand of medusa hair" count="15" />
+	</imbuement>
+
+</imbuements>

@@ -34,6 +34,7 @@
 extern Game g_game;
 extern Spells* g_spells;
 extern Vocations g_vocations;
+extern Imbuements g_imbuements;
 
 Items Item::items;
 
@@ -591,6 +592,36 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		case ATTR_IMBUEMENT_0: {
+			uint32_t imbuement_0;
+			if (!propStream.read<uint32_t>(imbuement_0)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_IMBUEMENT_0, imbuement_0);
+			break;
+		}
+
+		case ATTR_IMBUEMENT_1: {
+			uint32_t imbuement_1;
+			if (!propStream.read<uint32_t>(imbuement_1)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_IMBUEMENT_1, imbuement_1);
+			break;
+		}
+
+		case ATTR_IMBUEMENT_2: {
+			uint32_t imbuement_2;
+			if (!propStream.read<uint32_t>(imbuement_2)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_IMBUEMENT_2, imbuement_2);
+			break;
+		}
+
 		//these should be handled through derived classes
 		//If these are called then something has changed in the items.xml since the map was saved
 		//just read the values
@@ -770,6 +801,21 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 	if (hasAttribute(ITEM_ATTRIBUTE_SHOOTRANGE)) {
 		propWriteStream.write<uint8_t>(ATTR_SHOOTRANGE);
 		propWriteStream.write<uint8_t>(getIntAttr(ITEM_ATTRIBUTE_SHOOTRANGE));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_IMBUEMENT_0)) {
+		propWriteStream.write<uint8_t>(ATTR_IMBUEMENT_0);
+		propWriteStream.write<uint32_t>(getIntAttr(ITEM_ATTRIBUTE_IMBUEMENT_0));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_IMBUEMENT_1)) {
+		propWriteStream.write<uint8_t>(ATTR_IMBUEMENT_1);
+		propWriteStream.write<uint32_t>(getIntAttr(ITEM_ATTRIBUTE_IMBUEMENT_1));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_IMBUEMENT_2)) {
+		propWriteStream.write<uint8_t>(ATTR_IMBUEMENT_2);
+		propWriteStream.write<uint32_t>(getIntAttr(ITEM_ATTRIBUTE_IMBUEMENT_2));
 	}
 }
 
@@ -1374,6 +1420,37 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 		}
 
 		s << '.';
+	}
+
+	if (g_imbuements.equipmentSlots.count(it.id)) {
+		std::vector<std::pair<uint16_t, uint32_t>> imbs;
+
+		if (item) {
+			imbs = item->getImbuements();
+		}
+
+		s << std::endl << "Imbuements: (";
+
+		uint8_t slots = g_imbuements.equipmentSlots[it.id];
+
+		for (uint8_t i = 0; i < slots; i++) {
+			if (i > 0) {
+				s << ", ";
+			}
+
+			if (i < imbs.size()) {
+				s << g_imbuements.getImbuement(imbs[i].first)->getName() << " ";
+
+				uint32_t hours = imbs[i].second / 3600;
+				uint32_t minutes = (imbs[i].second / 60) % 60;
+
+				s << hours << ":" << &"0"[minutes > 9] << minutes << "h";
+			} else {
+				s << "Free Slot";
+			}
+		}
+
+		s << ").";
 	}
 
 	if (lookDistance <= 1) {

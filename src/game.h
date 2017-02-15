@@ -74,6 +74,7 @@ enum LightState_t {
 #define EVENT_LIGHTINTERVAL 10000
 #define EVENT_DECAYINTERVAL 250
 #define EVENT_DECAY_BUCKETS 4
+#define EVENT_IMBUEMENTINTERVAL 1000
 
 /**
   * Main Game class.
@@ -453,6 +454,14 @@ class Game
 		void addCommandTag(char tag);
 		void resetCommandTag();
 
+		void startImbuementCountdown(Item* item) {
+			imbuedItems.insert(item);
+		}
+
+		void stopImbuementCountdown(Item* item) {
+			imbuedItems.erase(item);
+		}
+
 		void startDecay(Item* item);
 		int32_t getLightHour() const {
 			return lightHour;
@@ -505,6 +514,8 @@ class Game
 		Quests quests;
 
 	protected:
+		void checkImbuements();
+
 		bool playerSayCommand(Player* player, const std::string& text);
 		bool playerSaySpell(Player* player, SpeakClasses type, const std::string& text);
 		void playerWhisper(Player* player, const std::string& text);
@@ -514,6 +525,8 @@ class Game
 
 		void checkDecay();
 		void internalDecayItem(Item* item);
+
+		std::set<Item*> imbuedItems;
 
 		std::unordered_map<uint32_t, Player*> players;
 		std::unordered_map<std::string, Player*> mappedPlayerNames;

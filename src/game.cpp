@@ -97,6 +97,8 @@ void Game::start(ServiceManager* manager)
 	g_scheduler.addEvent(createSchedulerTask(EVENT_LIGHTINTERVAL, std::bind(&Game::checkLight, this)));
 	g_scheduler.addEvent(createSchedulerTask(EVENT_CREATURE_THINK_INTERVAL, std::bind(&Game::checkCreatures, this, 0)));
 	g_scheduler.addEvent(createSchedulerTask(EVENT_DECAYINTERVAL, std::bind(&Game::checkDecay, this)));
+
+	g_scheduler.addEvent(createSchedulerTask(EVENT_IMBUEMENTINTERVAL, std::bind(&Game::checkImbuements, this)));
 }
 
 GameState_t Game::getGameState() const
@@ -4251,6 +4253,40 @@ void Game::internalDecayItem(Item* item)
 		ReturnValue ret = internalRemoveItem(item);
 		if (ret != RETURNVALUE_NOERROR) {
 			std::cout << "[Debug - Game::internalDecayItem] internalDecayItem failed, error code: " << static_cast<uint32_t>(ret) << ", item id: " << item->getID() << std::endl;
+		}
+	}
+}
+
+void Game::checkImbuements()
+{
+	g_scheduler.addEvent(createSchedulerTask(EVENT_IMBUEMENTINTERVAL, std::bind(&Game::checkImbuements, this)));
+	
+	auto it = imbuedItems.begin(), end = imbuedItems.end();
+	while (it != end) {
+		Item* item = *it;
+
+		if (item->isRemoved()) {
+			it = imbuedItems.erase(it);
+			printf("item %s was removed\n", item->getName().c_str());
+			continue;
+		}
+
+		for (uint32_t offset = 0; offset < 3; offset++) {
+			uint32_t info = item->getIntAttr(static_cast<itemAttrTypes>(ITEM_ATTRIBUTE_IMBUEMENT_0 << offset));
+
+			int32_t duration = info >> 8;
+			duration = std::max(0, duration - EVENT_IMBUEMENTINTERVAL / 1000);
+
+			uint16_t id = info & 0xFF;
+
+			item->setIntAttr(static_cast<itemAttrTypes>(ITEM_ATTRIBUTE_IMBUEMENT_0 << offset), (duration << 8) | id);
+		}
+
+		if (item->getImbuements().empty()) {
+			it = imbuedItems.erase(it);
+			printf("item %s ran out\n", item->getName().c_str());
+		} else {
+			it++;
 		}
 	}
 }

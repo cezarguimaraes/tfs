@@ -27,6 +27,7 @@
 
 extern Game g_game;
 extern Vocations g_vocations;
+extern Imbuements g_imbuements;
 
 MoveEvents::MoveEvents() :
 	scriptInterface("MoveEvents Interface")
@@ -654,82 +655,133 @@ uint32_t MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* item, 
 		player->setItemAbility(slot, true);
 	}
 
-	if (!it.abilities) {
+	if (it.abilities) {
+		if (it.abilities->invisible) {
+			Condition* condition = Condition::createCondition(static_cast<ConditionId_t>(slot), CONDITION_INVISIBLE, -1, 0);
+			player->addCondition(condition);
+		}
+
+		if (it.abilities->manaShield) {
+			Condition* condition = Condition::createCondition(static_cast<ConditionId_t>(slot), CONDITION_MANASHIELD, -1, 0);
+			player->addCondition(condition);
+		}
+
+		if (it.abilities->speed != 0) {
+			g_game.changeSpeed(player, it.abilities->speed);
+		}
+
+		if (it.abilities->conditionSuppressions != 0) {
+			player->addConditionSuppressions(it.abilities->conditionSuppressions);
+			player->sendIcons();
+		}
+
+		if (it.abilities->regeneration) {
+			Condition* condition = Condition::createCondition(static_cast<ConditionId_t>(slot), CONDITION_REGENERATION, -1, 0);
+
+			if (it.abilities->healthGain != 0) {
+				condition->setParam(CONDITION_PARAM_HEALTHGAIN, it.abilities->healthGain);
+			}
+
+			if (it.abilities->healthTicks != 0) {
+				condition->setParam(CONDITION_PARAM_HEALTHTICKS, it.abilities->healthTicks);
+			}
+
+			if (it.abilities->manaGain != 0) {
+				condition->setParam(CONDITION_PARAM_MANAGAIN, it.abilities->manaGain);
+			}
+
+			if (it.abilities->manaTicks != 0) {
+				condition->setParam(CONDITION_PARAM_MANATICKS, it.abilities->manaTicks);
+			}
+
+			player->addCondition(condition);
+		}
+
+		//skill modifiers
+		bool needUpdateSkills = false;
+
+		for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
+			if (it.abilities->skills[i]) {
+				needUpdateSkills = true;
+				player->setVarSkill(static_cast<skills_t>(i), it.abilities->skills[i]);
+			}
+		}
+
+		if (needUpdateSkills) {
+			player->sendSkills();
+		}
+
+		//stat modifiers
+		bool needUpdateStats = false;
+
+		for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
+			if (it.abilities->stats[s]) {
+				needUpdateStats = true;
+				player->setVarStats(static_cast<stats_t>(s), it.abilities->stats[s]);
+			}
+
+			if (it.abilities->statsPercent[s]) {
+				needUpdateStats = true;
+				player->setVarStats(static_cast<stats_t>(s), static_cast<int32_t>(player->getDefaultStats(static_cast<stats_t>(s)) * ((it.abilities->statsPercent[s] - 100) / 100.f)));
+			}
+		}
+
+		if (needUpdateStats) {
+			player->sendStats();
+		}
+	}
+
+	std::vector<Imbuement*> imbs;
+	for (auto& info : item->getImbuements()) {
+		imbs.push_back(g_imbuements.getImbuement(info.first));
+	}
+
+	if (imbs.empty()) {
 		return 1;
 	}
 
-	if (it.abilities->invisible) {
-		Condition* condition = Condition::createCondition(static_cast<ConditionId_t>(slot), CONDITION_INVISIBLE, -1, 0);
-		player->addCondition(condition);
-	}
+	g_game.startImbuementCountdown(item);
 
-	if (it.abilities->manaShield) {
-		Condition* condition = Condition::createCondition(static_cast<ConditionId_t>(slot), CONDITION_MANASHIELD, -1, 0);
-		player->addCondition(condition);
-	}
-
-	if (it.abilities->speed != 0) {
-		g_game.changeSpeed(player, it.abilities->speed);
-	}
-
-	if (it.abilities->conditionSuppressions != 0) {
-		player->addConditionSuppressions(it.abilities->conditionSuppressions);
-		player->sendIcons();
-	}
-
-	if (it.abilities->regeneration) {
-		Condition* condition = Condition::createCondition(static_cast<ConditionId_t>(slot), CONDITION_REGENERATION, -1, 0);
-
-		if (it.abilities->healthGain != 0) {
-			condition->setParam(CONDITION_PARAM_HEALTHGAIN, it.abilities->healthGain);
+	for (Imbuement* ib : imbs) {
+		if (ib->speed != 0) {
+			g_game.changeSpeed(player, ib->speed);
 		}
 
-		if (it.abilities->healthTicks != 0) {
-			condition->setParam(CONDITION_PARAM_HEALTHTICKS, it.abilities->healthTicks);
+		//skill modifiers
+		bool needUpdateSkills = false;
+
+		for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
+			if (ib->skills[i]) {
+				needUpdateSkills = true;
+				player->setVarSkill(static_cast<skills_t>(i), ib->skills[i]);
+			}
 		}
 
-		if (it.abilities->manaGain != 0) {
-			condition->setParam(CONDITION_PARAM_MANAGAIN, it.abilities->manaGain);
+		if (needUpdateSkills) {
+			player->sendSkills();
 		}
 
-		if (it.abilities->manaTicks != 0) {
-			condition->setParam(CONDITION_PARAM_MANATICKS, it.abilities->manaTicks);
+		//stat modifiers
+		bool needUpdateStats = false;
+
+		for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
+			if (ib->stats[s]) {
+				if (s == STAT_MAGICPOINTS) {
+					std::string vocName = player->getVocation()->getVocName();
+					if (vocName.find("druid") == std::string::npos && vocName.find("sorcerer") == std::string::npos) {
+						// only mages can use bonus ml imbuement
+						continue;
+					}
+				}
+
+				needUpdateStats = true;
+				player->setVarStats(static_cast<stats_t>(s), ib->stats[s]);
+			}
 		}
 
-		player->addCondition(condition);
-	}
-
-	//skill modifiers
-	bool needUpdateSkills = false;
-
-	for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
-		if (it.abilities->skills[i]) {
-			needUpdateSkills = true;
-			player->setVarSkill(static_cast<skills_t>(i), it.abilities->skills[i]);
+		if (needUpdateStats) {
+			player->sendStats();
 		}
-	}
-
-	if (needUpdateSkills) {
-		player->sendSkills();
-	}
-
-	//stat modifiers
-	bool needUpdateStats = false;
-
-	for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
-		if (it.abilities->stats[s]) {
-			needUpdateStats = true;
-			player->setVarStats(static_cast<stats_t>(s), it.abilities->stats[s]);
-		}
-
-		if (it.abilities->statsPercent[s]) {
-			needUpdateStats = true;
-			player->setVarStats(static_cast<stats_t>(s), static_cast<int32_t>(player->getDefaultStats(static_cast<stats_t>(s)) * ((it.abilities->statsPercent[s] - 100) / 100.f)));
-		}
-	}
-
-	if (needUpdateStats) {
-		player->sendStats();
 	}
 
 	return 1;
@@ -749,62 +801,113 @@ uint32_t MoveEvent::DeEquipItem(MoveEvent*, Player* player, Item* item, slots_t 
 		g_game.startDecay(item);
 	}
 
-	if (!it.abilities) {
+	if (it.abilities) {
+		if (it.abilities->invisible) {
+			player->removeCondition(CONDITION_INVISIBLE, static_cast<ConditionId_t>(slot));
+		}
+
+		if (it.abilities->manaShield) {
+			player->removeCondition(CONDITION_MANASHIELD, static_cast<ConditionId_t>(slot));
+		}
+
+		if (it.abilities->speed != 0) {
+			g_game.changeSpeed(player, -it.abilities->speed);
+		}
+
+		if (it.abilities->conditionSuppressions != 0) {
+			player->removeConditionSuppressions(it.abilities->conditionSuppressions);
+			player->sendIcons();
+		}
+
+		if (it.abilities->regeneration) {
+			player->removeCondition(CONDITION_REGENERATION, static_cast<ConditionId_t>(slot));
+		}
+
+		//skill modifiers
+		bool needUpdateSkills = false;
+
+		for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
+			if (it.abilities->skills[i] != 0) {
+				needUpdateSkills = true;
+				player->setVarSkill(static_cast<skills_t>(i), -it.abilities->skills[i]);
+			}
+		}
+
+		if (needUpdateSkills) {
+			player->sendSkills();
+		}
+
+		//stat modifiers
+		bool needUpdateStats = false;
+
+		for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
+			if (it.abilities->stats[s]) {
+				needUpdateStats = true;
+				player->setVarStats(static_cast<stats_t>(s), -it.abilities->stats[s]);
+			}
+
+			if (it.abilities->statsPercent[s]) {
+				needUpdateStats = true;
+				player->setVarStats(static_cast<stats_t>(s), -static_cast<int32_t>(player->getDefaultStats(static_cast<stats_t>(s)) * ((it.abilities->statsPercent[s] - 100) / 100.f)));
+			}
+		}
+
+		if (needUpdateStats) {
+			player->sendStats();
+		}
+	}
+
+	std::vector<Imbuement*> imbs;
+	for (auto& info : item->getImbuements()) {
+		imbs.push_back(g_imbuements.getImbuement(info.first));
+	}
+
+	if (imbs.empty()) {
 		return 1;
 	}
 
-	if (it.abilities->invisible) {
-		player->removeCondition(CONDITION_INVISIBLE, static_cast<ConditionId_t>(slot));
-	}
+	g_game.stopImbuementCountdown(item);
 
-	if (it.abilities->manaShield) {
-		player->removeCondition(CONDITION_MANASHIELD, static_cast<ConditionId_t>(slot));
-	}
-
-	if (it.abilities->speed != 0) {
-		g_game.changeSpeed(player, -it.abilities->speed);
-	}
-
-	if (it.abilities->conditionSuppressions != 0) {
-		player->removeConditionSuppressions(it.abilities->conditionSuppressions);
-		player->sendIcons();
-	}
-
-	if (it.abilities->regeneration) {
-		player->removeCondition(CONDITION_REGENERATION, static_cast<ConditionId_t>(slot));
-	}
-
-	//skill modifiers
-	bool needUpdateSkills = false;
-
-	for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
-		if (it.abilities->skills[i] != 0) {
-			needUpdateSkills = true;
-			player->setVarSkill(static_cast<skills_t>(i), -it.abilities->skills[i]);
-		}
-	}
-
-	if (needUpdateSkills) {
-		player->sendSkills();
-	}
-
-	//stat modifiers
-	bool needUpdateStats = false;
-
-	for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
-		if (it.abilities->stats[s]) {
-			needUpdateStats = true;
-			player->setVarStats(static_cast<stats_t>(s), -it.abilities->stats[s]);
+	for (Imbuement* ib : imbs) {
+		if (ib->speed != 0) {
+			g_game.changeSpeed(player, -ib->speed);
 		}
 
-		if (it.abilities->statsPercent[s]) {
-			needUpdateStats = true;
-			player->setVarStats(static_cast<stats_t>(s), -static_cast<int32_t>(player->getDefaultStats(static_cast<stats_t>(s)) * ((it.abilities->statsPercent[s] - 100) / 100.f)));
-		}
-	}
+		//skill modifiers
+		bool needUpdateSkills = false;
 
-	if (needUpdateStats) {
-		player->sendStats();
+		for (int32_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
+			if (ib->skills[i] != 0) {
+				needUpdateSkills = true;
+				player->setVarSkill(static_cast<skills_t>(i), -ib->skills[i]);
+			}
+		}
+
+		if (needUpdateSkills) {
+			player->sendSkills();
+		}
+
+		//stat modifiers
+		bool needUpdateStats = false;
+
+		for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
+			if (ib->stats[s]) {
+				if (s == STAT_MAGICPOINTS) {
+					std::string vocName = player->getVocation()->getVocName();
+					if (vocName.find("druid") == std::string::npos && vocName.find("sorcerer") == std::string::npos) {
+						// only mages can use bonus ml imbuement
+						continue;
+					}
+				}
+				
+				needUpdateStats = true;
+				player->setVarStats(static_cast<stats_t>(s), -ib->stats[s]);
+			}
+		}
+
+		if (needUpdateStats) {
+			player->sendStats();
+		}
 	}
 
 	return 1;

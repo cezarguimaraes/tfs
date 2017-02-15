@@ -23,6 +23,7 @@
 #include "cylinder.h"
 #include "thing.h"
 #include "items.h"
+#include "imbuement.h"
 
 #include <deque>
 
@@ -97,6 +98,9 @@ enum AttrTypes_t {
 	ATTR_ARMOR = 31,
 	ATTR_HITCHANCE = 32,
 	ATTR_SHOOTRANGE = 33,
+	ATTR_IMBUEMENT_0 = 34,
+	ATTR_IMBUEMENT_1 = 35,
+	ATTR_IMBUEMENT_2 = 36,
 };
 
 enum Attr_ReadValue {
@@ -285,7 +289,7 @@ class ItemAttributes
 
 	public:
 		inline static bool isIntAttrType(itemAttrTypes type) {
-			return (type & 0x7FFE13) != 0;
+			return (type & 0x3FFFE13) != 0;
 		}
 		inline static bool isStrAttrType(itemAttrTypes type) {
 			return (type & 0x1EC) != 0;
@@ -738,6 +742,17 @@ class Item : virtual public Thing
 		const Tile* getTile() const;
 		bool isRemoved() const {
 			return !parent || parent->isRemoved();
+		}
+
+		std::vector<std::pair<uint16_t, uint32_t>> getImbuements() const {
+			std::vector<std::pair<uint16_t, uint32_t>> imbuements;
+
+			for (uint32_t offset = 0; offset < 3; offset++) {
+				uint32_t info = getIntAttr(static_cast<itemAttrTypes>(ITEM_ATTRIBUTE_IMBUEMENT_0 << offset));
+				if (info >> 8) imbuements.emplace_back(info & 0xFF, info >> 8);
+			}
+
+			return imbuements;
 		}
 
 	protected:

@@ -1134,4 +1134,8 @@
 		<vocation name="Elder Druid" showInDescription="0" />
 	</movevent>
 	<movevent event="DeEquip" itemid="22424" slot="shield" function="onDeEquipItem" />
+
+	<movevent event="Equip" itemid="11305" slot="hand" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="11305" slot="hand" function="onDeEquipItem" />
+
 </movements>

@@ -42,6 +42,7 @@ extern MoveEvents* g_moveEvents;
 extern Weapons* g_weapons;
 extern CreatureEvents* g_creatureEvents;
 extern Events* g_events;
+extern Imbuements g_imbuements;
 
 MuteCountMap Player::muteCountMap;
 
@@ -1966,6 +1967,16 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 							g_game.transformItem(item, item->getID(), charges - 1);
 						}
 					}
+				}
+			}
+
+			auto imbs = item->getImbuements();
+			for (auto& info : imbs) {
+				Imbuement* ib = g_imbuements.getImbuement(info.first);
+				int16_t absorbPercent = ib->absorbPercent[combatTypeToIndex(combatType)];
+				
+				if (absorbPercent != 0) {
+					damage -= std::ceil(damage * (absorbPercent / 100.));
 				}
 			}
 		}

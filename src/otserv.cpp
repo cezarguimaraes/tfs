@@ -38,6 +38,7 @@
 #include "databasemanager.h"
 #include "scheduler.h"
 #include "databasetasks.h"
+#include "imbuement.h"
 
 DatabaseTasks g_databaseTasks;
 Dispatcher g_dispatcher;
@@ -47,6 +48,7 @@ Game g_game;
 ConfigManager g_config;
 Monsters g_monsters;
 Vocations g_vocations;
+Imbuements g_imbuements;
 RSA g_RSA;
 
 std::mutex g_loaderLock;
@@ -230,6 +232,12 @@ void mainLoader(int, char*[], ServiceManager* services)
 	Outfits* outfits = Outfits::getInstance();
 	if (!outfits->loadFromXml()) {
 		startupErrorMessage("Unable to load outfits!");
+		return;
+	}
+
+	std::cout << ">> Loading imbuements" << std::endl;
+	if (!g_imbuements.loadFromXml()) {
+		startupErrorMessage("Unable to load imbuements!");
 		return;
 	}
 
